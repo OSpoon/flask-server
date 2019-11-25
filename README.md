@@ -75,6 +75,123 @@ def create_data():
 
 执行命令: `python manage.py create_data`
 
+## flask-restful flasgger API-文档
+
+*主要记录flasgger的安装及基本使用过程:*
+
+**安装flasgger**
+```python
+pip install flasgger
+```
+
+**初始化flasgger**
+```python
+from flasgger import Swagger
+
+swagger = Swagger()
+
+def init_swagger_plugin(app):    
+    swagger.init_app(app)
+
+def create_app(config_name):
+    app = Flask(__name__)
+    init_swagger_plugin(app)
+    return app
+```
+
+**配置flasgger参数**
+```python
+SWAGGER = {    'title': 'ShortUrl API',    'uiversion': 3}
+```
+
+**配置接口描述yml文件**
+*get接口*
+```yml
+通过id获取长连接
+---
+parameters:
+  - name: id
+    in: '使用长连接生成的id'
+    type: string
+    required: true
+    enum: ['csdisjzaf']
+    default: 'csdisjzaf'
+responses:
+  200:
+    description: '查询成功后返回id指定的长连接'
+    schema:
+      $ref: '#/definitions/ShortUrlGetResp'
+    examples:
+      data: 'https://blog.csdn.net/lanyang123456/article/details/80717250'
+definitions:
+  ShortUrlGetResp:
+    type: object
+    properties:
+      data:
+        type: string
+```
+*post接口*
+```yml
+根据传入的长连接生成短连接
+---
+parameters:
+  - name: source
+    in: '使用长连接生成的id'
+    type: string
+    required: true
+    enum: '{"source":"https://blog.csdn.net/lanyang123456/article/details/80717250"}'
+    default: '{"source":"https://blog.csdn.net/lanyang123456/article/details/80717250"}'
+responses:
+  200:
+    description: '返回生成的短连接'
+    schema:
+      $ref: '#/definitions/ShortUrlPostResp'
+    examples:
+      data: '{"short": "http://localhost:5000/surl/csdisjzaf"}'
+definitions:
+  ShortUrlPostResp:
+    type: object
+    properties:
+      short:
+        type: string
+```
+
+**改造flask_restful->Resource**
+*指定函数配置接口yml文件*
+```python
+class ShortUrl(Resource):
+
+    @swag_from('short_url_get.yml')
+    def get(self, id):
+    
+    @swag_from('short_url_post.yml')
+    def post(self):
+
+```
+
+**访问预览**
+```
+http://localhost:5000/apidocs/#/
+```
+
+**问题解决**
+如果你在使用flask-restful有以下形式的配置,可能生成的接口文档每个接口会生成按多个路由生成多份
+```
+api.add_resource(ShortUrl, '/surl', '/surl/<id>')
+```
+要解决这个现象,请进行以下配置:
+1. 拆分resource,指明endpoint
+```python
+api.add_resource(ShortUrl, '/surl', endpoint="surl_post")
+api.add_resource(ShortUrl, '/surl/<id>', endpoint="surl_get")
+```
+2. 为swag_from增加endpoint配置
+```python
+@swag_from('short_url_get.yml', endpoint='surl_get')
+
+@swag_from('short_url_post.yml', endpoint='surl_post')
+```
+
 ## 应用flasgger实现swagger文档查看
 
 ` http://127.0.0.1:9999/apidocs/ `
