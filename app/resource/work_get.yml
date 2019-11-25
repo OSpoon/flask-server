@@ -1,0 +1,25 @@
+通过日期获取是否是工作日
+---
+tags:
+  - Working
+parameters:
+  - name: date
+    in: path
+    type: string
+    description: 日期
+    required: true
+    default: '2020-01-01'
+
+responses:
+  200:
+    description: 返回日期和是否是工作日标识
+    schema:
+      properties:
+        date:
+          type: string
+          description: "日期"
+          default: "2020-01-06"
+        isWork:
+          type: boolean
+          description: "是否是工作日标识"
+          default: true
