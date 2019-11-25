@@ -1,0 +1,27 @@
+根据传入的长连接生成短连接
+---
+tags:
+  - ShortUrl
+parameters:
+  - name: body
+    in: body
+    required: true
+    schema:
+      id: data
+      required:
+        - source
+      properties:
+        source:
+          type: string
+          description: "源链接"
+          default: "https://blog.csdn.net/lanyang123456/article/details/80717250"
+
+responses:
+  200:
+    description: "返回生成的短连接"
+    schema:
+      properties:
+        short:
+          type: string
+          description: "短链接"
+          default: "http://localhost:5000/surl/csdisjzaf"
