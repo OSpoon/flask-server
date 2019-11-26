@@ -196,5 +196,29 @@ api.add_resource(ShortUrl, '/surl/<id>', endpoint="surl_get")
 
 ` http://127.0.0.1:9999/apidocs/ `
 
+## PyCharm配置使用Flask-Script启动以及开启Debug模式
 
+####  配置PyCharm中的启动参数
+
+1. 点击“Edit Configuartions” 
+
+   ![00001](C:\Users\zhanxiaolin-n22\Documents\flask-server\sources\00001.png)
+
+2. 对运行时和运行环境做相关配置 
+
+   ![00002](C:\Users\zhanxiaolin-n22\Documents\flask-server\sources\00002.png)
+
+####  开启Debug模式 
+
+```python
+from flask.ext.script import Manager, Server
+ 
+app = Flask(__name__)
+manager = Manager(app)
+manager.add_command("runserver", Server(use_debugger=True))
+ 
+ 
+if __name__ == "__main__":
+    manager.run()
+```
 
