@@ -202,11 +202,11 @@ api.add_resource(ShortUrl, '/surl/<id>', endpoint="surl_get")
 
 1. 点击“Edit Configuartions” 
 
-   ![00001](C:\Users\zhanxiaolin-n22\Documents\flask-server\sources\00001.png)
+   ![00001](./sources/00001.png)
 
 2. 对运行时和运行环境做相关配置 
 
-   ![00002](C:\Users\zhanxiaolin-n22\Documents\flask-server\sources\00002.png)
+   ![00002](./sources/00002.png)
 
 ####  开启Debug模式 
 
