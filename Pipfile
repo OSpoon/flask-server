@@ -14,6 +14,7 @@ flasgger = "*"
 flask-sqlalchemy = "*"
 arrow = "*"
 blinker = "*"
+requests = "*"
 
 [requires]
 python_version = "3.7"
